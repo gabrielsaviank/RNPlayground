@@ -13,10 +13,19 @@ const reducer = (state, action) => {
     // action === { colourToChange: 'red' || 'green' || 'blue', amount: 15 || -15 } 
     switch (action.colourToChange) {
         case 'red':
-           return { ...state, red: state.red + action.amount }; 
+            return state.red + action.amount > 255 || state.red + action.amount < 0  
+                ? state
+                : { ...state, red: state.red + action.amount }; 
+            
         case 'blue':
+            if(state.blue + action.amount > 255 || state.blue + action.amount < 0 ) {
+                return state;
+            }
             return { ...state, blue: state.blue + action.amount }; 
         case 'green': 
+            if(state.green + action.amount > 255 || state.green + action.amount < 0 ) {
+                return state;
+            }
             return { ...state, green: state.green + action.amount }; 
         default:
             return state;
@@ -24,7 +33,7 @@ const reducer = (state, action) => {
 };
 
 const SquareScreen = () => {
-
+    // reducer
     const [state, dispatch] = useReducer(reducer, {red: 0, blue: 0, green: 0});
     const  {red, green, blue} = state;
     return(
